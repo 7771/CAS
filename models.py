@@ -1,8 +1,26 @@
-from flask import Flask
-from . import db
- 
-"""engine = create_engine('sqlite:///')
-conn = engine.connect()"""
+from app import db 
+
+class Room(db.Model):     
+    rid = db.Column(db.Integer, primary_key=True)     
+    capacity = db.Column(db.String(80))     
+    gender = db.Column(db.String(120)) 
+    facilities = db.Column(db.String(200))
+    room_parents = db.Column(db.Integer)
+    room_score = db.Column(db.Integer)
+   
+
+class Worker(db.Model):
+    worker_id = db.Column(db.Integer, primary_key=True)
+    fname = db.Column(db.String(25))
+    mname = db.Column(db.String(25))
+    lname = db.Column(db.String(30))
+    gender = db.Column(db.Boolean, default=True)
+    event = db.Column(db.String(30))
+    event_year= db.Column(db.Date)
+    age = db.Column(db.Integer)
+    location = db.Column(db.String(50))
+    nurse = db.Column(db.Boolean, default=False)
+    parent = db.Column(db.Boolean, default=False)
 
 class Child(db.Model):
     child_id = db.Column(db.Integer, primary_key=True)
@@ -19,28 +37,6 @@ class Child(db.Model):
     gender = db.Column(db.Boolean, default = True)
     parent = db.Column(db.String, db.ForeignKey('parent.parent_id'))
     room_score = db.Column(db.Integer)
-
-    def __init__(self, fname, lname, age):
-        self.fname = fname
-        self.lname = lname
-
-    def __repr__(self):
-        return '<Child %r>' % self.fname
-#####customize gender booleans
-
-class Worker(db.Model):
-    worker_id = db.Column(db.Integer, primary_key=True)
-    fname = db.Column(db.String(25))
-    mname = db.Column(db.String(25))
-    lname = db.Column(db.String(30))
-    gender = db.Column(db.Boolean, default=True)
-    event = db.Column(db.String(30))
-    event_year= db.Column(db.Date)
-    age = db.Column(db.Integer)
-    location = db.Column(db.String(50))
-    nurse = db.Column(db.Boolean, default=False)
-    parent = db.Column(db.Boolean, default=False)
-    #creator = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     
 class Parent(db.Model):
     parent_id = db.Column(db.Integer, primary_key=True)
@@ -51,11 +47,11 @@ class Parent(db.Model):
     gender = db.Column(db.Boolean)
     skills = db.Column(db.String(100))
 
-class Rooms(db.Model):
-    room_id = db.Column(db.Integer, primary_key=True)
-    room_score = db.Column(db.Integer)
-    room_bathrooms = db.Column(db.Integer)
-    room_gender = db.Column(db.Boolean)
-    room_beds = db.Column(db.Integer)
-    room_parents = db.Column(db.Integer)
-
+    def __init__(self, capacity, gender, facilities):         
+        self.capacity = capacity         
+        self.gender = gender
+        self.facilities = facilities
+    
+    def __repr__(self):
+        return '<User %r>' % self.rid
+    
